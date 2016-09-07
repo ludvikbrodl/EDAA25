@@ -1,0 +1,44 @@
+1.
+#include <stdio.h>
+
+2.
+#include <stdio.h>
+size_t int_size = sizeof(int);
+
+3.
+Stack
+▼▼▼▼
+grows into this space
+▲▲▲▲
+Heap
+Data
+
+4.
+Holds the address of the next machine code instruciton to execute.
+
+5.
+When entering a new activation record(function) all parameters and the return address are pushed to the new activation record(stack frame). When the function is complete the hardware needs to know where to point the PC(Porgram Counter) to return to the line after calling function in the machine instructions.
+
+6.
+Yes, a variable that contains a value which happens to be the address.
+
+7.
+. How would you allocate memory for an array of n int elements?
+#include <stdio.h>
+int main(int argc, char**, argv)
+{
+	int a[10], i; //compiler allocates memory on the stack when (the activation record of 'main')
+	return 0;
+}
+
+#include <stdlib.h>
+int main(int argc, char**, argv)
+{
+	size_t n;
+	int* b;
+	sscanf(argv[1], "%zu", &n);)
+	b = calloc(n, sizeof(int)); //this allocates memory on the heap(post compiler)
+
+	free(b);
+	return 0;
+}
