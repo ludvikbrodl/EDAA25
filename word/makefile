@@ -18,3 +18,7 @@ malloc.o: malloc.c
 
 clean:
 	rm -f *.s *.o $(OUT) output
+
+val: compile
+	valgrind --leak-check=yes ./a.out < input > output
+	diff output correct
