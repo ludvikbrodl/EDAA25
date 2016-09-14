@@ -6,10 +6,10 @@ typedef struct list_t list_t;
 struct list_t {
 	list_t*	succ;
 	list_t* pred;
-	void* 	data;
+	char 	data;
 };
 
-list_t* new_list(void* data)
+list_t* new_list(char data)
 {
 	list_t* list;
 	list = malloc(sizeof(list_t));
@@ -39,7 +39,7 @@ void free_list(list_t** list)
 	*list = NULL; //dunno why
 }
 
-void insert_last(list_t** list, void* data)
+void insert_last(list_t** list, char data)
 {
 	list_t*		p = *list;
 	list_t*		q;
@@ -72,11 +72,11 @@ int main(void)
 	length_temp = 0;
 	while ((ch = getchar()) != EOF) {
 		while (ch != '\n' && ch != ' ') {
-			insert_last(&head, &ch);
+			insert_last(&head, ch);
 			length_temp++;
 			ch = getchar();
-
-			printf("%s", (char*)head->data);
+			
+			//printf("%s", (char*)head->data);
 		}
 		/*
 		if (length > length_temp) {
@@ -95,7 +95,7 @@ int main(void)
 	}
 	list_t* p = head;
 	do {
-		printf("%s ", (char*)p->data);
+		printf("%c ", p->data);
 		p = p->succ;
 	} while (p != head);
 	//free_list(&head_temp);
