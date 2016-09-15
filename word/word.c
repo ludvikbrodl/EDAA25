@@ -1,11 +1,11 @@
 #include <stdio.h>
-#include <string.h>
+#include <ctype.h>
 
 typedef struct list_t list_t;
 
 struct list_t {
 	list_t*	succ;
-	list_t* pred;
+	list_t*	pred;
 	char 	data;
 };
 
@@ -61,44 +61,41 @@ void insert_last(list_t** list, char data)
 int ch;
 
 
-int length;
-int length_temp;
+
 
 int main(void)
 {
-	//list_t* head_temp = new_list(NULL);
-	list_t* head = NULL;
+	int length, length_temp;
+	list_t* head;
+	list_t* head_temp;
+	head = NULL;
+	head_temp = NULL;
 	length = 0;
 	length_temp = 0;
 	while ((ch = getchar()) != EOF) {
-		while (ch != '\n' && ch != ' ') {
-			insert_last(&head, ch);
+		free_list(&head_temp);
+		while (isalpha(ch)) {
+			insert_last(&head_temp, ch);
 			length_temp++;
 			ch = getchar();
-			
-			//printf("%s", (char*)head->data);
 		}
-		/*
-		if (length > length_temp) {
-			free_list(&head_temp);
-			head_temp = new_list(NULL);
-			length_temp = 0;
-		} else {
+		if (length_temp > length) {
 			free_list(&head);
-			head = new_list(NULL);
+			head = head_temp;
 			length = length_temp;
-			length_temp = 0;
-			memcpy(head, head_temp, sizeof(list_t));
+			head_temp = NULL; //'make room' for new list
+		} else {
 			free_list(&head_temp);
-		}*/
-
+		}
+		length_temp = 0;
 	}
+	printf("%d characters in longest word: ", length);
 	list_t* p = head;
 	do {
-		printf("%c ", p->data);
+		printf("%c", p->data);
 		p = p->succ;
 	} while (p != head);
-	//free_list(&head_temp);
+	printf("\n");
 	free_list(&head);
 	return 0;
 }
