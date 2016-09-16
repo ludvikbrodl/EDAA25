@@ -1,0 +1,23 @@
+1.
+Otherwise the entire array would have to be copied since the paremeters exist on the stack which are function dependent. Also called array decay
+
+2.
+Because you when you have the pointer to the start of the second arrays you can reach it all.
+
+3.
++, -. -- ++
+
+4.
+The temp pointer can be pointing to the old location of the array, the reallocated memory might be somewhere entirely different.
+
+5.
+realloc might return null, in which case the pointer is lost making free(p) impossible.
+
+6.
+list->succ
+
+7.
+sizeof "C11" is 4 because the endstring byte needs to be stored
+strlen returns the number of chars = 3;
+
+
