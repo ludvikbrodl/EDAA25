@@ -1,0 +1,14 @@
+1.
+Wide characters and multibyte characters
+
+2.
+8 will be printed since when declaring a variable inside the same namespace the first declaration is invisible during the duration of the latter declaration.
+
+3.
+an identifier can reference to the same object or function of another file scope by being declared extern. or it can be said that it is a unique identifier for the current scope by being declared as static. Internal linkage is very useful to avoid conflicts between different files (declare us variables as static!). At block scope only identifiers decalted with extern have linkage. others have no linkage and therefor will give a compilation error if declared multiple times.
+
+4.
+The action that is performed is called type aliasing and it's meaningless because of ANSI C aliasing rules which prohibits type aliasing to help compilers optimze C code. However there are some exceptions to this called: corresponding integer types which allows for void/char or integers with different sign.
+
+5.
+It's stored as 1000 xx....xx 0101 which is is a very large number if unsigned.
