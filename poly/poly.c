@@ -43,7 +43,6 @@ list_t* new_list(term_t* term)
 
 void free_list(list_t** list)
 {
-	//no need to free term since coff and exp is saved from the stack strings on input
 	list_t* p;
 	list_t* q;
 
@@ -185,6 +184,7 @@ void insert(list_t** list, term_t* term)
 		insert_last(list, term);
 		return;
 	}
+	insert_last(list, term);
 
 
 }
@@ -195,22 +195,42 @@ poly_t* mul(poly_t* a, poly_t* b)
 	list_t* blist = b->terms;
 	list_t* prod = NULL;
 	poly_t* product = malloc(sizeof(poly_t));
-	product->terms = prod;
 	do {
 		do {
-
-			insert(&prod, new_term2(alist->term->coff * blist->term->coff, alist->term->exp + alist->term->exp));
+			term_t* t = new_term2(alist->term->coff * blist->term->coff, alist->term->exp + blist->term->exp);
+			insert(&prod, t);
 			blist = blist->succ;
 		} while (blist != b->terms);
 		alist = alist->succ;
 	} while (alist != a->terms);
-
+	product->terms = prod;
+	//check for collisions on exponents
+	//pointer-fun!	
+	list_t* prod_list1 = prod;
+	list_t* prod_list2 = prod;
+	do {
+		do {
+			list_t* temp = prod_list2->succ;
+			if(prod_list1 != prod_list2) {
+				if(prod_list1->term->exp == prod_list2->term->exp) {
+				prod_list1->term->coff += prod_list2->term->coff;
+				prod_list2->pred->succ = prod_list2->succ;
+				prod_list2->succ->pred = prod_list2->pred;
+				prod_list2->succ = NULL;
+				prod_list2->pred = prod_list2;
+				free_list(&prod_list2);				
+				}
+			}
+			prod_list2 = temp;
+		} while (prod_list2 != prod);
+		prod_list1 = prod_list1->succ;
+	} while (prod_list1 != prod);
+	
 	return product;
 }
 
 void print_poly(poly_t* poly)
 {
-	printf("\n");
 	list_t* p = poly->terms;
 	if (p->term->coff == 1) {
 		printf("x");
