@@ -21,7 +21,7 @@ struct term_t {
  	int exp;
 };
 
-void free_term(term_t** term);
+void free_term(term_t* term);
 
 struct list_t {
 	list_t* succ;
@@ -54,12 +54,12 @@ void free_list(list_t** list)
 	}
 	p->pred->succ = NULL;
 	q = p->succ;
-	free_term(&p->term);
+	free_term(p->term);
 	free(p);
 	p = q;
 	while (p != NULL) {
 		q = p->succ;
-		free_term(&p->term);
+		free_term(p->term);
 		free(p);
 		p = q;
 	}
@@ -87,14 +87,42 @@ void insert_last(list_t** list, term_t* term)
 term_t* new_term(const char* str)
 {
 	printf("%s", str);
-	printf("\n");
+	
 	term_t* term = malloc(sizeof(term_t));
-	term->coff = 0;
-	term->exp = 0;
+	//TODO
+	term->coff = 1;
+	if(str[0] == '-') {
+		term->coff = -1;
+		str++;
+		str++;
+	} else if(str[0] == '+') {
+		str++;
+		str++;
+	}
+	char coff_str[100];
+	char exp_str[100];
+
+	char* x = strchr(str, 'x');
+	if (x != NULL && (x-str) != '0') {
+		memcpy(coff_str, str, x-str+1);
+		term->coff = term->coff * atoi(coff_str);	
+	} else {
+		term->coff = term->coff * atoi(str);
+	}
+	
+	char* e = strchr(str, '^');
+	if(e != NULL) {
+		strncpy(exp_str, x+2, strlen(str)*sizeof(char)-(x-str));
+		term->exp = atoi(exp_str);
+	} else if (x != NULL) {
+		term->exp = 1;
+	} else {
+		term->exp = 0;
+	}
 	return term;
 }
 
-void free_term(term_t** term)
+void free_term(term_t* term)
 {
 	free(term);
 }
@@ -148,6 +176,7 @@ void free_poly(poly_t* poly)
 
 poly_t* mul(poly_t* a, poly_t* b)
 {
+	//TODO
 	return NULL;
 }
 
