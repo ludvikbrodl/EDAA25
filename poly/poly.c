@@ -31,8 +31,7 @@ struct list_t {
 
 list_t* new_list(term_t* term)
 {
-	list_t* list;
-	list = malloc(sizeof(list_t));
+	list_t* list = malloc(sizeof(list_t));
 	if (list == NULL) {
 		exit(1);
 	}
@@ -85,13 +84,10 @@ void insert_last(list_t** list, term_t* term)
 }
 // - 2x^2 
 term_t* new_term(const char* str)
-{
-	printf("%s", str);
-	
+{	
 	term_t* term = malloc(sizeof(term_t));
-	//TODO
 	term->coff = 1;
-	if(str[0] == '-') {
+	if (str[0] == '-') {
 		term->coff = -1;
 		str++;
 		str++;
@@ -103,15 +99,17 @@ term_t* new_term(const char* str)
 	char exp_str[100];
 
 	char* x = strchr(str, 'x');
-	if (x != NULL && (x-str) != '0') {
+	if (x != NULL && (x-str) == 0) {
+		term->coff = 1;
+	} else if ((x-str) == 0) {
 		memcpy(coff_str, str, x-str+1);
-		term->coff = term->coff * atoi(coff_str);	
+		term->coff = term->coff * atoi(coff_str);
 	} else {
 		term->coff = term->coff * atoi(str);
 	}
 	
 	char* e = strchr(str, '^');
-	if(e != NULL) {
+	if (e != NULL) {
 		strncpy(exp_str, x+2, strlen(str)*sizeof(char)-(x-str));
 		term->exp = atoi(exp_str);
 	} else if (x != NULL) {
@@ -138,7 +136,7 @@ poly_t*	new_poly_from_string(const char* str)
 	term_start = 0;
 	for (i = 0; i < len; i++) {
 		//for the first term
-		if(str[i] == ' ' || str[i] == '\0') {
+		if (str[i] == ' ' || str[i] == '\0') {
 			//reset the temp array.
 			memset(temp, '\0', sizeof(temp));
 			memcpy(temp, str+term_start, sizeof(char)*(i-term_start+1));
@@ -146,7 +144,7 @@ poly_t*	new_poly_from_string(const char* str)
 			term_start = i + 1;
 		}
 		//the rest of the terms
-		else if(str[i] == '+' || str[i] == '-') {
+		else if (str[i] == '+' || str[i] == '-') {
 			i++; //pass the sign;
 			i++; //pass the whitepsace;
 			//reset the temp array.
@@ -176,11 +174,46 @@ void free_poly(poly_t* poly)
 
 poly_t* mul(poly_t* a, poly_t* b)
 {
-	//TODO
+	git 
 	return NULL;
 }
 
 void print_poly(poly_t* poly)
 {
+	printf("\n");
+	list_t* p = poly->terms;
+	if (p->term->coff == 1) {
+		printf("x");
+	} else {
+		printf("%dx", p->term->coff);
+	}
+	if (p->term->exp != 1) {
+		printf("^%d", p->term->exp);
+	}
 
+	p = p->succ;
+	while (p != poly->terms) {
+		printf(" ");
+		if (p->term->coff < 0) {
+				putchar('-');
+			} else {
+				putchar('+');
+			}
+			putchar(' ');
+		if (p->term->exp != 0) {			
+			if (p->term->coff == 1) {
+				putchar('x');
+			} else {
+				printf("%dx", abs(p->term->coff));
+			}
+			if (p->term->exp != 1) {
+				printf("^%d", p->term->exp);
+			}
+		} else {
+			printf("%d", abs(p->term->coff));
+		}
+
+		p = p->succ;
+	}
+	printf("\n");
 }
