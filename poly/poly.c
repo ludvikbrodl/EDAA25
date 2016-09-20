@@ -120,6 +120,13 @@ term_t* new_term(const char* str)
 	return term;
 }
 
+term_t* new_term2(int coff, int exp) {
+	term_t* term = malloc(sizeof(term_t));
+	term->coff = coff;
+	term->exp = exp;
+	return term;
+}
+
 void free_term(term_t* term)
 {
 	free(term);
@@ -172,10 +179,33 @@ void free_poly(poly_t* poly)
 	free(poly);
 }
 
+void insert(list_t** list, term_t* term)
+{
+	if (*list == NULL) {
+		insert_last(list, term);
+		return;
+	}
+
+
+}
+
 poly_t* mul(poly_t* a, poly_t* b)
 {
-	git 
-	return NULL;
+	list_t* alist = a->terms;
+	list_t* blist = b->terms;
+	list_t* prod = NULL;
+	poly_t* product = malloc(sizeof(poly_t));
+	product->terms = prod;
+	do {
+		do {
+
+			insert(&prod, new_term2(alist->term->coff * blist->term->coff, alist->term->exp + alist->term->exp));
+			blist = blist->succ;
+		} while (blist != b->terms);
+		alist = alist->succ;
+	} while (alist != a->terms);
+
+	return product;
 }
 
 void print_poly(poly_t* poly)

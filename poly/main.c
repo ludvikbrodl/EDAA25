@@ -5,7 +5,7 @@ static void poly_test(const char* a, const char* b)
 {
 	poly_t*		p;
 	poly_t*		q;
-	//poly_t*		r;
+	poly_t*		r;
 
 	printf("Begin polynomial test of (%s) * (%s)\n", a, b);
 
@@ -15,13 +15,13 @@ static void poly_test(const char* a, const char* b)
 	print_poly(p);
 	print_poly(q);
 
-	//r = mul(p, q);
+	r = mul(p, q);
 
-	//print_poly(r);
+	print_poly(r);
 
 	free_poly(p);
 	free_poly(q);
-	//free_poly(r);
+	free_poly(r);
 
 	printf("End polynomial test of (%s) * (%s)\n", a, b);
 }
