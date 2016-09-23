@@ -12,3 +12,24 @@ The action that is performed is called type aliasing and it's meaningless becaus
 
 5.
 It's stored as 1000 xx....xx 0101 which is is a very large number if unsigned.
+
+6.
+integer promotion. When arithemtic operations are performed with types smaller than integer they areautomaticlly "promoted" to integer and perform the values as if both were integers, the value is then recast if necessary. 
+
+7.
+struct Data {
+	signed int 		a:1;
+	unsigned int 	b:1;
+	int 			c:1	
+};
+Since if int has the behaviour of signed or unsigned is compiler specific it can give unexpected behaviours when changings from one compiler to another. Therefor use signed/unsigned specifiers when using bit-field. Sine unsigned and signed differ in their number range it is important to specify.
+3 bits signed ->	-4 to +3
+3 bits unsigned->	0 to 7
+
+8.
+Enums must be representable by an integer, meaning 
+#include <limits.h>
+enum dogs_t {LABRADOR = INT_MAX, PUDEL}; //invalid since pudel will be int_max + 1.
+
+#define LABRADR = INT_MAX;
+#define PUDEL = INT_MAX + 1;
