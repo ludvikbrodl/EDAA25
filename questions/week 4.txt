@@ -1,0 +1,46 @@
+1.
+void f(size_t n) {
+	int a[n];
+}
+the array is allocated on the stack and does not have to, or can be, free'd
+
+variably modified type or VM type is what a pointer to a VLA is called.
+
+2.
+double (p*)[n]; //compiler knows that # of columns are n. Typical pointer to a VLA.
+
+3.
+<stdint.h>
+uintptr_t and intptr_t which are both guaranteed to be large enough to hold object pointer.
+
+4.
+regers to selecting an address according to some critera. Natural alignment refers to giving data items an address which is a multiple of it's size.
+i.e assuming short is 2 bytes:
+struct node_t {
+	short 	a;
+	char 	b;
+	short 	c;
+} // equals 6 bytes
+
+struct node_t {
+	short	a;
+	short	b;
+	char 	c;
+} // equals 5 bytes
+
+5.
+a = (a + 7) & ~7;//(0xyyyy + 0x0111) & 0x1000 //this is equal to dividing på 8 then multiplying, the remainder will be lost which is what we want to for alignment.
+
+p = (double*)a; //OK!
+//don't forget to use uintptr_t and not unsigned int for the pointer operations as mentioned in question 3.
+
+6.
+Flexible array member may only be used in structs. This allows the struct to "flex" -> expand. Only useable when the array member is the last memeber in a struct and can't be a lone in a struct, this is to enforce keeping track of the size with n.
+This struct cannot be declared, only a pointer to it since the compiler wouldn't know how much memory to allocate on the stack.
+struct flexer {
+	size_t	n;
+	int flex[];
+}
+
+7.
+sequence point is for example a semicolon in C. This marks when a side effect have been performed. Side effects include modification of a variable which is the most important one. A variable may only be modified ONCE between sequence points.
