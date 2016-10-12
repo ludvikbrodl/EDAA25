@@ -1,0 +1,63 @@
+1.
+square(++x) with expand to 'x++ * x++' meaning the x will be incremenet twice.
+Calling cos twice is valid but slow.
+
+2.
+It prevents the macro from eating up a while/for block if they 1 line loops.
+
+3.
+#include <a.h>	//looks for the file in an implementation defined directoy
+#include "b.h"	//looks for the file relative the current source (the file with this include)
+
+4.
+It's a recommendation, but many times the programmer is less knowledgable than the compiler meaning it can give worse performance when used. Most compilers today do inline automatically already when appropriate.
+
+5.
+Because the inlined function has been copied each static storage is unique to that inlined function, meaning that a call to the static data would point to different values depending on if external och the functions definition was used. Therefor they have made it illegal.
+
+6.
+Using a symbol with internal linkage from an extern inline function would mean that ínline:ing the function would result in accessing symbols which belong to the internal linkage symbols of the extern function. Because this not something desirable it has been made illegal.
+static int g(void)
+{
+return 1;
+}
+static int a;
+extern inline int f(void)
+{
+a = 1; // I n vali d .
+return g(); // I n vali d .
+}
+Restriction: an inline function with external linkage is not allowed to
+access any identifier with internal linkage.
+When f is inlined in some file, it will use the available function g or
+variable a but then different files can have different functions g, and a.
+
+7.
+Just answered in 5-6, these problems do not arise when inline:ing a internal linkage function.
+
+8.
+To enable run-time error reporting and debugging.
+#define NDEBUG 1
+Disable by defining NDEBUG, this will convert the assert to something like
+#define assert(expr) ((void)0)
+assuming you have included <assert.h>
+
+10.
+int except;
+double x;
+
+errno = 0;
+x = sqrt(-1.0);
+if(math_errhandling & MATH_ERRNO) {
+	if (errno == EDOM) {
+		puts("EDOM");
+	}
+}
+
+if(math_errhandling & MATH_ERREXCEPT) {
+	except = fetestexcept(FE_ALL_EXCEPT);
+	if (except & FE_INVALID) {
+		puts("FE_INVALID");
+	}
+}
+perror(NULL) // prints numerical argument out of domain
